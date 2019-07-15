@@ -1,41 +1,36 @@
 <template>
   <div id="app">
-    <div class="container">
+    <div class="container--tabs">
       <div class="col-md-6 offset-md-3">
         <h1 class="text-center mb-4">Todo List</h1>
         <input type="text" class="form-control mb-4" v-model="userInput" @keyup.enter="addNewTodo">
 
         <div class="list-group mb-4">
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#" @click="changeCurrentState('active')">할일</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#" @click="changeCurrentState('done')">완료</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#" @click="changeCurrentState('all')">전체</a>
-            </li>
-          </ul>
+          <v-tabs
+                  background-color="transparent"
+                  color="basil"
+                  grow
+                  >
+            <v-tab
+                    v-for="(tab, index) in tabs"
+                    :key="index"
+                    @click="changeCurrentState(tab.value)">{{tab.name}}
+            </v-tab>
+          </v-tabs>
         </div>
-
-
-
-        <div class="list-group mb-4">
+        <div class="list-group mb-4 tab-pane fade show active" id="tab-content">
           <template v-for="todo in actionTodoList">
             <button type="button" class="list-group-item text-left" @click="toggleState(todo)">{{todo.label}}</button>
           </template>
         </div>
-
-        <div class="text-right">
-          <button type="button" class="btn btn-sm" @click="changeCurrentState('active')">할일</button>
-          <button type="button" class="btn btn-sm" @click="changeCurrentState('done')">완료</button>
-          <button type="button" class="btn btn-sm" @click="changeCurrentState('all')">전체</button>
-        </div>
-
       </div>
     </div>
+
+
   </div>
+
+
+
 </template>
 <script>
   export default {
@@ -45,6 +40,16 @@
         userInput : '',
         todo : [],
         currentState : 'active',
+        tabs : [{
+          name:'할일',
+          value:'active'
+        },{
+          name:'완료',
+          value:'done'
+        },{
+          name : '전체',
+          value:'all'
+        }]
       }
     },
     computed : {
@@ -56,15 +61,16 @@
     },
     methods : {
       addNewTodo(){
-        this.todo.push({
-          label : this.userInput,
-          state : 'active',
-        });
-        this.userInput = '';
+        if (this.userInput.length > 0) {
+          this.todo.push({
+            label : this.userInput,
+            state : 'active',
+          });
+          this.userInput = '';
+        }
       },
       changeCurrentState(state){
         this.currentState = state;
-        return false;
       },
       toggleState(todo){
         todo.state = todo.state === 'active'?'done':'active';
@@ -73,10 +79,13 @@
   };
 </script>
 <style>
+  /*
   #app {
     font-family:'Avenir', Helvetica, Arial, sans-serif;
     text-align:center;
     color:#2c3e50;
     margin-top:30px;
   }
+  */
+
 </style>
