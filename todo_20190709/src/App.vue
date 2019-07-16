@@ -14,7 +14,8 @@
             <v-tab
                     v-for="(tab, index) in tabs"
                     :key="index"
-                    @click="changeCurrentState(tab.value)">{{tab.name}}
+                    @click="changeCurrentState(tab.value)"
+                    >{{tab.name}}
             </v-tab>
           </v-tabs>
         </div>
